@@ -1,0 +1,99 @@
+# name of executable
+
+ELF=$(notdir $(CURDIR)).elf
+
+# Tool path
+
+TOOLROOT=~/gcc-arm/gcc-arm-none-eabi-6-2017-q2-update/bin
+
+# Library path
+
+LIBROOT=/home/trinch/repos/blinky/Libraries
+
+# Tools
+
+CC=$(TOOLROOT)/arm-none-eabi-gcc
+LD=$(TOOLROOT)/arm-none-eabi-gcc
+AR=$(TOOLROOT)/arm-none-eabi-ar
+AS=$(TOOLROOT)/arm-none-eabi-as
+
+# Code Paths
+
+DEVICE=$(LIBROOT)/CMSIS/Device/ST/STM32F7xx
+CORE=$(LIBROOT)/CMSIS
+PERIPH=$(LIBROOT)/STM32F7xx_HAL_Driver
+# Board Support Package
+BSP=$(LIBROOT)/BSP/STM32F769I-Discovery
+
+# Search path for standard files
+
+# next two lines are possibly useless
+#STM_SRC = $(TEMPLATE_ROOT)/Libraries/STM32F7xx_HAL_Driver/Src
+#STM_TEMPLATE = $(TEMPLATE_ROOT)/Libraries/CMSIS/Device/ST/STM32F7xx/Source/Templates
+vpath %.c $(TEMPLATEROOT)
+
+# Search path for perpheral library
+
+vpath %.c $(CORE)
+vpath %.c $(BSP)
+vpath %.c $(PERIPH)/Src
+vpath %.c $(DEVICE)
+
+# Search path for Library
+
+#vpath %.c $(TEMPLATEROOT)/Library/ff9/src
+#vpath %.c $(TEMPLATEROOT)/Library/ff9/src/option
+#vpath %.c $(TEMPLATEROOT)/Library
+
+#  Processor specific
+
+#PTYPE = STM32F10X_MD_VL 
+#PTYPE = STM32F746xx
+PTYPE = STM32F769xx
+PTYPE1 = STM32F769I_DISCOVERY
+
+LDSCRIPT = $(TEMPLATEROOT)/stm32f7-discovery.ld
+
+STARTUP_FOLDER= $(LIBROOT)/CMSIS/Device/ST/STM32F7xx/Source/Templates
+STARTUP = $(STARTUP_FOLDER)/gcc/startup_stm32f769xx.o
+STARTUP += $(STARTUP_FOLDER)/system_stm32f7xx.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_gpio.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_cortex.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_i2c.o
+STARTUP += $(BSP)/stm32f769i_discovery.o
+
+# Compilation Flags
+
+FULLASSERT = -DUSE_FULL_ASSERT
+
+LDFLAGS+= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m7 -specs=nosys.specs
+CFLAGS+= -mcpu=cortex-m7 -mthumb 
+CFLAGS+= -I$(TEMPLATEROOT) -I$(DEVICE)/Include -I$(CORE)/Include -I$(PERIPH)/Inc -I$(BSP) -I.
+CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER $(FULLASSERT)
+
+# Build executable 
+
+$(ELF) : $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+
+# compile and generate dependency info
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -MM $(CFLAGS) $< > $*.d
+
+%.o: %.s
+	$(CC) -c $(CFLAGS) $< -o $@
+
+clean:
+	rm -f $(OBJS) $(OBJS:.o=.d) $(ELF) startup_stm32f* $(CLEANOTHER)
+
+debug: $(ELF)
+	arm-none-eabi-gdb $(ELF)
+
+
+# pull in dependencies
+
+-include $(OBJS:.o=.d)
