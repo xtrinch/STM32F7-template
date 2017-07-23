@@ -28,6 +28,6 @@ This way, you can have several project directories that use a common makefile, w
 
 The demo project basically just toggles some LED's on and off.
 
-## Other STM32F7 boards
+### Other STM32F7 boards
 
 Should be pretty easy to adapt to use with other STM32F7 discovery boards, just go through `Makefile.common` and include appropriate `.c` files for your board (Look for those included that have more than STM32F7 defined in their filename)
