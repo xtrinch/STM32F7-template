@@ -27,3 +27,7 @@ STM32F7Cube embedded software stack composed of:
 This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`, a concept adapted from [STM32-Template github project](https://github.com/geoffreymbrown/STM32-Template).
 
 The demo project basically just toggles some LED's on and off.
+
+## Other STM32F7 boards
+
+Should be pretty easy to adapt to use with other STM32F7 discovery boards, just go through `Makefile.common` and include appropriate `.c` files for your board (Look for those included that have more than STM32F7 defined in their filename)
