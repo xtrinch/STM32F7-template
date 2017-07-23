@@ -1,6 +1,6 @@
 # STM32F7-template
 
-Build template for the STM32F7 microprocessor, specifically the STM32F7 discovery boards.
+Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery boards. Developed for and tested with STM32F769I-Disco, easily adaptable for others.
 
 ## Toolchain
 
@@ -17,7 +17,6 @@ STM32F7Cube embedded software stack composed of:
   - STM32F7xx HAL (Hardware abstraction layer?) drivers
   - low-layer CMSIS (Cortex Microcontroller Software Interface Standard) drivers
   - BSP (Board Support Package) - middleware components (RTOS, USB, FatFs, graphics and TCP/IP).
-
 
 ## Usage
 
