@@ -1,6 +1,6 @@
 # STM32F7-template
 
-Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery boards. Developed for and tested with STM32F769I-Disco, easily adaptable for others.
+Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery boards. Developed for and tested with STM32F769I-Disco, easily adaptable for others. Tested on Ubuntu 16.04.2 LTS.
 
 ## GNU Toolchain
 
