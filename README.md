@@ -17,16 +17,11 @@ In the `Libraries/` folder, you can find STM32F7Cube embedded software stack com
   - STM32F7xx HAL (Hardware abstraction layer?) drivers
   - low-layer CMSIS (Cortex Microcontroller Software Interface Standard) drivers
   - BSP (Board Support Package) - middleware components (RTOS, USB, FatFs, graphics and TCP/IP).
-
-## Programming & debugging
-
-https://github.com/texane/stlink
-
-Open source version of the STMicroelectronics Stlink Tools, made for Linux (in my case built from binaries for Ubuntu)
-
+  
 ## Usage
 
   - clone the template
+  - adapt the toolchain and optionally libraries path, should you decide to put them outside the template
   - run make in the `Demo/` directory
   
 This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`, a concept adapted from [STM32-Template github project](https://github.com/geoffreymbrown/STM32-Template).
@@ -36,3 +31,15 @@ The demo project basically just toggles some LED's on and off.
 ### Other STM32F7 boards
 
 Should be pretty easy to adapt to use with other STM32F7 discovery boards, just go through `Makefile.common` and include appropriate `.c` files for your board (Look for those included that have more than STM32F7 defined in their filename)
+
+## Programming & debugging the board
+
+https://github.com/texane/stlink
+
+Open source version of the STMicroelectronics Stlink Tools, made for Linux (in my case built from binaries for Ubuntu):
+
+  - Start st-util in one window with `st-util -1`
+  - Start GDB with `arm-none-eabi-gdb test.elf`:
+      - `(gdb) target extended-remote :4242`
+      - `(gdb) load`
+      - `(gdb) continue`
