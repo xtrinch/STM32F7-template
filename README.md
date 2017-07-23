@@ -14,8 +14,8 @@ http://www.st.com/en/embedded-software/stm32cubef7.html
 
 STM32F7Cube embedded software stack composed of:
 
-  - STM32Cube HAL drivers
-  - low-layer CMSIS (Cortex Microcontroller Software Interface Standard)
+  - HAL drivers
+  - low-layer CMSIS (Cortex Microcontroller Software Interface Standard) drivers
   - BSP (Board Support Package) - middleware components (RTOS, USB, FatFs, graphics and TCP/IP).
 
 
