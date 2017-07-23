@@ -2,7 +2,7 @@
 
 Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery boards. Developed for and tested with STM32F769I-Disco, easily adaptable for others.
 
-## Toolchain
+## GNU Toolchain
 
 https://developer.arm.com/open-source/gnu-toolchain/gnu-rm
 
@@ -12,11 +12,17 @@ GNU ARM Embedded Toolchain, pre-built for ARM Cortex-M and Cortex-R processors.
 
 http://www.st.com/en/embedded-software/stm32cubef7.html
 
-STM32F7Cube embedded software stack composed of:
+In the `Libraries/` folder, you can find STM32F7Cube embedded software stack composed of:
 
   - STM32F7xx HAL (Hardware abstraction layer?) drivers
   - low-layer CMSIS (Cortex Microcontroller Software Interface Standard) drivers
   - BSP (Board Support Package) - middleware components (RTOS, USB, FatFs, graphics and TCP/IP).
+
+## Programming & debugging
+
+https://github.com/texane/stlink
+
+Open source version of the STMicroelectronics Stlink Tools, made for Linux (in my case built from binaries for Ubuntu)
 
 ## Usage
 
