@@ -50,5 +50,5 @@ Open source version of the STMicroelectronics Stlink Tools, made for Linux (in m
 ### Windows flashing
 http://www.st.com/en/embedded-software/stsw-link004.html
 
-  - Download ST-LINK Utility and add directory with CLI executable to user/system PATH variable
+  - Download ST-LINK Utility and add directory with st-link_cli executable to user/system PATH variable
   - Run `make flash-windows` in `Demo/` directory
