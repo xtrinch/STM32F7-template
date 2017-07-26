@@ -1,14 +1,14 @@
 # name of executable
 
-ELF=$(notdir $(CURDIR)).elf
+TARGET=$(notdir $(CURDIR))
 
 # Tool path
 
-TOOLROOT=~/gcc-arm/gcc-arm-none-eabi-6-2017-q2-update/bin
+TOOLROOT='C:/Program Files (x86)/GNU Tools ARM Embedded/6 2017-q2-update/bin'
 
 # Library path
 
-LIBROOT=/home/trinch/repos/blinky/Libraries
+LIBROOT=C:/Users/trinch/repos/STM32F7-template/Libraries
 
 # Tools
 
@@ -16,6 +16,8 @@ CC=$(TOOLROOT)/arm-none-eabi-gcc
 LD=$(TOOLROOT)/arm-none-eabi-gcc
 AR=$(TOOLROOT)/arm-none-eabi-ar
 AS=$(TOOLROOT)/arm-none-eabi-as
+OBJCOPY=$(TOOLROOT)/arm-none-eabi-objcopy
+GDB=$(TOOLROOT)/arm-none-eabi-gdb
 
 # Code Paths
 
@@ -75,7 +77,9 @@ CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER $(FULLASSERT)
 
 # Build executable 
 
-$(ELF) : $(OBJS)
+$(TARGET).bin: $(TARGET).elf
+
+$(TARGET).elf : $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 
 # compile and generate dependency info
@@ -87,12 +91,17 @@ $(ELF) : $(OBJS)
 %.o: %.s
 	$(CC) -c $(CFLAGS) $< -o $@
 
+%.bin: %.elf
+	$(OBJCOPY) -O binary $< $@
+
 clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) $(ELF) startup_stm32f* $(CLEANOTHER)
 
 debug: $(ELF)
-	arm-none-eabi-gdb $(ELF)
+	$(GDB) $(ELF)
 
+flash: $(TARGET).bin
+	st-flash write $(TARGET).bin 0x8000000
 
 # pull in dependencies
 
