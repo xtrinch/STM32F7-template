@@ -34,12 +34,19 @@ Should be pretty easy to adapt to use with other STM32F7 discovery boards, just 
 
 ## Programming & debugging the board
 
+### Linux debugging
 https://github.com/texane/stlink
 
 Open source version of the STMicroelectronics Stlink Tools, made for Linux (in my case built from binaries for Ubuntu):
 
   - Start st-util in one window with `st-util -1`
-  - Start GDB with `arm-none-eabi-gdb test.elf`:
+  - Start GDB with `arm-none-eabi-gdb test.elf` or `make debug` in `Demo/` directory:
       - `(gdb) target extended-remote :4242`
       - `(gdb) load`
       - `(gdb) continue`
+      
+### Windows flashing
+http://www.st.com/en/embedded-software/stsw-link004.html
+
+  - Download ST-LINK Utility and add directory with CLI executable to user/system PATH variable
+  - Run `make flash-windows` in `Demo/` directory
