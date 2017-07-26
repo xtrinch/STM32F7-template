@@ -27,6 +27,9 @@ PERIPH=$(LIBROOT)/STM32F7xx_HAL_Driver
 # Board Support Package
 BSP=$(LIBROOT)/BSP/STM32F769I-Discovery
 
+# External loader for windows st-util
+EL='C:/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility/ExternalLoader/MX25L512G_STM32F769I-DISCO.stldr'
+
 # Search path for standard files
 
 # next two lines are possibly useless
@@ -95,13 +98,16 @@ $(TARGET).elf : $(OBJS)
 	$(OBJCOPY) -O binary $< $@
 
 clean:
-	rm -f $(OBJS) $(OBJS:.o=.d) $(ELF) startup_stm32f* $(CLEANOTHER)
+	rm -f $(OBJS) $(OBJS:.o=.d) $(TARGET).elf $(TARGET).bin startup_stm32f* $(CLEANOTHER)
 
 debug: $(ELF)
 	$(GDB) $(ELF)
 
-flash: $(TARGET).bin
+flash: $(TARGET).hex
 	st-flash write $(TARGET).bin 0x8000000
+
+flash-windows: $(TARGET).bin
+	st-link_cli -c SWD -p $(TARGET).bin 0x8000000 -Rst -Run
 
 # pull in dependencies
 
