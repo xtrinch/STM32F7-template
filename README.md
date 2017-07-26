@@ -23,7 +23,7 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
 ## Usage
 
   - clone the template
-  - amend the toolchain and libraries path
+  - amend the toolchain and libraries path in `Makefile.common`
   - run make in the `Demo/` directory
   
 This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`, a concept adapted from [STM32-Template github project](https://github.com/geoffreymbrown/STM32-Template).
