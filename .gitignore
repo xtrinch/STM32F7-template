@@ -2,3 +2,5 @@
 *.o
 *.d
 *.save
+*.bin
+*.elf
