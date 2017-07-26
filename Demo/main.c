@@ -14,7 +14,7 @@ int main(void)
         BSP_LED_Toggle(LED_GREEN);
         BSP_LED_Toggle(LED_RED);
 
-        for (int j = 0; j < 1000000; j++)
+        for (int j = 0; j < 10000000; j++)
             ;
 
         printf("Hello, world! -- %i\n", i++);

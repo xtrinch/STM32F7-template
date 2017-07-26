@@ -4,11 +4,11 @@ TARGET=$(notdir $(CURDIR))
 
 # Tool path
 
-TOOLROOT='C:/Program Files (x86)/GNU Tools ARM Embedded/6 2017-q2-update/bin'
+TOOLROOT="C:/Program Files (x86)/GNU Tools ARM Embedded/6 2017-q2-update/bin"
 
 # Library path
 
-LIBROOT=C:/Users/trinch/repos/STM32F7-template/Libraries
+LIBROOT=C:/STM32Cube_FW_F7_V1.7.0/Drivers
 
 # Tools
 
