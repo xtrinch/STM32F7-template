@@ -25,7 +25,8 @@ DEVICE=$(LIBROOT)/CMSIS/Device/ST/STM32F7xx
 CORE=$(LIBROOT)/CMSIS
 PERIPH=$(LIBROOT)/STM32F7xx_HAL_Driver
 # Board Support Package
-BSP=$(LIBROOT)/BSP/STM32F769I-Discovery
+BSP_BASE=$(LIBROOT)/BSP
+BSP=$(BSP_BASE)/STM32F769I-Discovery
 
 # External loader for windows st-util
 EL='C:/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility/ExternalLoader/MX25L512G_STM32F769I-DISCO.stldr'
@@ -52,10 +53,11 @@ vpath %.c $(DEVICE)
 
 #  Processor specific
 
-#PTYPE = STM32F10X_MD_VL 
+#PTYPE = STM32F10X_MD_VL
 #PTYPE = STM32F746xx
 PTYPE = STM32F769xx
 PTYPE1 = STM32F769I_DISCOVERY
+PTYPE2 = STM32F769NIHx
 
 LDSCRIPT = $(TEMPLATEROOT)/stm32f7-discovery.ld
 
@@ -65,20 +67,36 @@ STARTUP += $(STARTUP_FOLDER)/system_stm32f7xx.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal_gpio.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma2d.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal_cortex.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal_i2c.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_tim.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_tim_ex.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_ltdc.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_ltdc_ex.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dsi.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_rcc_ex.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_rcc.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sdram.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_ll_fmc.o
+STARTUP += $(PERIPH)/Src/stm32f7xx_hal_pwr_ex.o
 STARTUP += $(BSP)/stm32f769i_discovery.o
+STARTUP += $(BSP)/stm32f769i_discovery_sdram.o
+STARTUP += $(BSP)/stm32f769i_discovery_lcd.o
+STARTUP += $(BSP)/stm32f769i_discovery_ts.o
+STARTUP += $(BSP_BASE)/Components/otm8009a/otm8009a.o
+STARTUP += $(BSP_BASE)/Components/ft6x06/ft6x06.o
 
 # Compilation Flags
 
 FULLASSERT = -DUSE_FULL_ASSERT
 
 LDFLAGS+= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m7 -specs=nosys.specs
-CFLAGS+= -mcpu=cortex-m7 -mthumb 
+CFLAGS+= -mcpu=cortex-m7 -mthumb
 CFLAGS+= -I$(TEMPLATEROOT) -I$(DEVICE)/Include -I$(CORE)/Include -I$(PERIPH)/Inc -I$(BSP) -I.
-CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER $(FULLASSERT)
+CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER -DUSE_STM32F769I_DISCO $(FULLASSERT)
 
-# Build executable 
+# Build executable
 
 $(TARGET).bin: $(TARGET).elf
 
@@ -100,14 +118,18 @@ $(TARGET).elf : $(OBJS)
 clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) $(TARGET).elf $(TARGET).bin startup_stm32f* $(CLEANOTHER)
 
-debug: $(ELF)
-	$(GDB) $(ELF)
+debug: $(TARGET).elf
+	$(GDB) $(TARGET).elf
 
-flash: $(TARGET).hex
+flash: $(TARGET).bin
 	st-flash write $(TARGET).bin 0x8000000
 
 flash-windows: $(TARGET).bin
 	st-link_cli -c SWD -p $(TARGET).bin 0x8000000 -Rst -Run
+
+# openocd gdb server, target extended-remote:3333 (4444 did not work for me for some reason)
+debug-openocd-gdbserver:
+	openocd -f  board/stm32f7discovery.cfg -s C:\OpenOCD-20170609\share\openocd\scripts
 
 # pull in dependencies
 
