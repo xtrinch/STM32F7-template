@@ -13,13 +13,13 @@ menu "Board"
 
 config PTYPE
 	string "PTYPE"
-	default ""
+	default "stm32f769xx"
 	help
 		Processor type (e.g. stm32f769xx)
 
 config BTYPE
 	string "BTYPE"
-	default ""
+	default "stm32f769i_discovery"
 	help
 		Processor type (e.g. stm32f769i_discovery)
 
@@ -29,13 +29,13 @@ menu "Paths"
 
 config TOOLROOT
 	string "TOOLROOT"
-	default ""
+	default "C:/GNUToolsARMEmbedded/6-2017-q2-update/bin/"
 	help
 		Toolroot path. Leave empty for toolchain already in $PATH.
 
 config LIBROOT
 	string "LIBROOT"
-	default ""
+	default "C:/STM32Cube_FW_F7_V1.7.0/Drivers"
 	help
 		STM32F7Cube path.
 
@@ -48,12 +48,28 @@ config BSP_MODULE_ENABLED
 	default y
 	help
 		Include BSP module.
+
 config BSP_SDRAM_MODULE_ENABLED
 	bool "BSP_SDRAM_MODULE_ENABLED"
 	default y
 	help
 		Include BSP SDRAM module.
 
+config BSP_AUDIO_MODULE_ENABLED
+	bool "BSP_AUDIO_MODULE_ENABLED"
+	default y
+	help
+		Include BSP audio module.
+
+endmenu
+
+menu "Included BSP components"
+
+config BSP_WM8994_COMPONENT_ENABLED
+	bool "BSP_WM8994_COMPONENT_ENABLED"
+	default y
+	help
+		Include BSP WM8994 component - hi-fi codec.
 endmenu
 
 menu "Included HAL libraries"
@@ -220,6 +236,12 @@ config HAL_SRAM_MODULE_ENABLED
 	help
 		Include HAL Static Random Access Memory module.
 
+config HAL_SD_MODULE_ENABLED
+	bool "HAL_SD_MODULE_ENABLED"
+	default y
+	help
+		Include HAL SD card module.
+
 config HAL_SDRAM_MODULE_ENABLED
 	bool "HAL_SDRAM_MODULE_ENABLED"
 	default y
@@ -256,6 +278,36 @@ config HAL_CRC_EX_MODULE_ENABLED
 	help
 		Include HAL Cyclic Redundancy Check extension module.
 
+config HAL_MMC_MODULE_ENABLED
+	bool "HAL_MMC_MODULE_ENABLED"
+	default y
+	help
+		Include HAL Multi Media Card module.
+
+config HAL_PCD_MODULE_ENABLED
+	bool "HAL_PCD_MODULE_ENABLED"
+	default y
+	help
+		Include HAL PCD (usb peripheral controller?) module.
+
+config HAL_PCD_EX_MODULE_ENABLED
+	bool "HAL_PCD_EX_MODULE_ENABLED"
+	default y
+	help
+		Include HAL PCD (usb peripheral controller?) extension module.
+
+config HAL_SAI_MODULE_ENABLED
+	bool "HAL_SAI_MODULE_ENABLED"
+	default y
+	help
+		Include HAL Serial Audio Interface module.
+
+config HAL_DFSDM_MODULE_ENABLED
+	bool "HAL_DFSDM_MODULE_ENABLED"
+	default y
+	help
+		Include HAL Digital Filter for SD modulators module.
+
 endmenu
 
 menu "Included LL libraries"
@@ -265,5 +317,23 @@ config LL_FMC_MODULE_ENABLED
 	default y
 	help
 		Include LL Flexible Memory Controller module.
+
+config LL_SDMMC_MODULE_ENABLED
+	bool "LL_SDMMC_MODULE_ENABLED"
+	default y
+	help
+		Include LL SD MMC card module.
+
+config LL_RCC_MODULE_ENABLED
+	bool "LL_RCC_MODULE_ENABLED"
+	default y
+	help
+		Include LL Reset and Clock Controller module.
+
+config LL_USB_MODULE_ENABLED
+	bool "LL_USB_MODULE_ENABLED"
+	default y
+	help
+		Include LL USB module.
 
 endmenu

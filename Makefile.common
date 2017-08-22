@@ -84,8 +84,10 @@ PERIPH=$(LIBROOT_FILENAME)/STM32F7xx_HAL_Driver
 $(eval $(call config_filename,BTYPE))
 $(eval $(call config_filename,PTYPE))
 PTYPE_FILENAME_LOWERCASE=$(shell echo $(PTYPE_FILENAME) | tr A-Z a-z)
+PTYPE_FILENAME_UPPERCASE=$(shell echo $(PTYPE_FILENAME) | tr a-w A-W)
 BTYPE_FILENAME_LOWERCASE=$(shell echo $(BTYPE_FILENAME) | tr A-Z a-z)
 BSP=$(LIBROOT_FILENAME)/BSP/$(BTYPE_FILENAME)
+BSP_COMPONENTS=$(LIBROOT_FILENAME)/BSP/Components
 # BSP board directory filenames sometimes contain - or _, randomly, test and change
 ifeq (,$(wildcard $(BSP))) # test if directory exists
 	BSP=$(LIBROOT_FILENAME)/BSP/$(subst _,-,$(BTYPE_FILENAME))
@@ -121,6 +123,14 @@ ifeq ($(strip $(CONFIG_BSP_MODULE_ENABLED)),y)
 endif
 ifeq ($(strip $(CONFIG_BSP_SDRAM_MODULE_ENABLED)),y)
 	STARTUP += $(BSP)/stm32f769i_discovery_sdram.o
+endif
+ifeq ($(strip $(CONFIG_BSP_AUDIO_MODULE_ENABLED)),y)
+	STARTUP += $(BSP)/stm32f769i_discovery_audio.o
+endif
+
+############ BSP components
+ifeq ($(strip $(CONFIG_BSP_WM8994_COMPONENT_ENABLED)),y)
+	STARTUP += $(BSP_COMPONENTS)/wm8994/wm8994.o
 endif
 
 ############ HAL
@@ -200,6 +210,9 @@ endif
 ifeq ($(strip $(CONFIG_HAL_SDRAM_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sdram.o
 endif
+ifeq ($(strip $(CONFIG_HAL_SD_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sd.o
+endif
 ifeq ($(strip $(CONFIG_HAL_SRAM_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sram.o
 endif
@@ -218,11 +231,35 @@ endif
 ifeq ($(strip $(CONFIG_HAL_CRC_EX_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_crc_ex.o
 endif
+ifeq ($(strip $(CONFIG_HAL_MMC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_mmc.o
+endif
+ifeq ($(strip $(CONFIG_HAL_PCD_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_pcd.o
+endif
+ifeq ($(strip $(CONFIG_HAL_PCD_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_pcd_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_SAI_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sai.o
+endif
+ifeq ($(strip $(CONFIG_HAL_DFSDM_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dfsdm.o
+endif
 
 
 ############ LL
 ifeq ($(strip $(CONFIG_LL_FMC_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_fmc.o
+endif
+ifeq ($(strip $(CONFIG_LL_SDMMC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_sdmmc.o
+endif
+ifeq ($(strip $(CONFIG_LL_RCC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_rcc.o
+endif
+ifeq ($(strip $(CONFIG_LL_USB_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_usb.o
 endif
 
 
@@ -233,7 +270,7 @@ FULLASSERT = -DUSE_FULL_ASSERT
 LDFLAGS+= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m7 -specs=nosys.specs
 CFLAGS+= -mcpu=cortex-m7 -mthumb
 CFLAGS+= -I$(TEMPLATEROOT) -I$(DEVICE)/Include -I$(CORE)/Include -I$(PERIPH)/Inc -I$(BSP) -I.
-CFLAGS+= -D$(CONFIG_PTYPE) -D$(CONFIG_BTYPE) -DUSE_HAL_DRIVER $(FULLASSERT)
+CFLAGS+= -D$(PTYPE_FILENAME_UPPERCASE) -D$(CONFIG_BTYPE) -DUSE_HAL_DRIVER $(FULLASSERT)
 
 # Build executable
 
