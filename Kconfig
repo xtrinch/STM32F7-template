@@ -9,13 +9,29 @@ config HAVE_DOT_CONFIG
 	bool
 	default y
 
+menu "Board"
+
+config PTYPE
+	string "PTYPE"
+	default ""
+	help
+		Processor type (e.g. stm32f769xx)
+
+config BTYPE
+	string "BTYPE"
+	default ""
+	help
+		Processor type (e.g. stm32f769i_discovery)
+
+endmenu
+
 menu "Paths"
 
 config TOOLROOT
 	string "TOOLROOT"
 	default ""
 	help
-		Toolroot path.
+		Toolroot path. Leave empty for toolchain already in $PATH.
 
 config LIBROOT
 	string "LIBROOT"
@@ -27,13 +43,13 @@ endmenu
 
 menu "Included BSP libraries"
 
-config BSP_STM32F769I_MODULE_ENABLED
-	bool "BSP_STM32F769I_MODULE_ENABLED"
+config BSP_MODULE_ENABLED
+	bool "BSP_MODULE_ENABLED"
 	default y
 	help
 		Include BSP module.
-config BSP_STM32F769I_SDRAM_MODULE_ENABLED
-	bool "BSP_STM32F769I_SDRAM_MODULE_ENABLED"
+config BSP_SDRAM_MODULE_ENABLED
+	bool "BSP_SDRAM_MODULE_ENABLED"
 	default y
 	help
 		Include BSP SDRAM module.

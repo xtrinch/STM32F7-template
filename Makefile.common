@@ -79,8 +79,17 @@ GDB=$(CONFIG_TOOLROOT)arm-none-eabi-gdb
 DEVICE=$(LIBROOT_FILENAME)/CMSIS/Device/ST/STM32F7xx
 CORE=$(LIBROOT_FILENAME)/CMSIS
 PERIPH=$(LIBROOT_FILENAME)/STM32F7xx_HAL_Driver
+
 # Board Support Package
-BSP=$(LIBROOT_FILENAME)/BSP/STM32F769I-Discovery
+$(eval $(call config_filename,BTYPE))
+$(eval $(call config_filename,PTYPE))
+PTYPE_FILENAME_LOWERCASE=$(shell echo $(PTYPE_FILENAME) | tr A-Z a-z)
+BTYPE_FILENAME_LOWERCASE=$(shell echo $(BTYPE_FILENAME) | tr A-Z a-z)
+BSP=$(LIBROOT_FILENAME)/BSP/$(BTYPE_FILENAME)
+# BSP board directory filenames sometimes contain - or _, randomly, test and change
+ifeq (,$(wildcard $(BSP))) # test if directory exists
+	BSP=$(LIBROOT_FILENAME)/BSP/$(subst _,-,$(BTYPE_FILENAME))
+endif
 
 # Search path for standard files
 vpath %.c $(TEMPLATEROOT)
@@ -100,20 +109,17 @@ vpath %.c $(DEVICE)
 
 #  Processor specific
 
-PTYPE = STM32F769xx
-PTYPE1 = STM32F769I_DISCOVERY
-
 LDSCRIPT = $(TEMPLATEROOT)/stm32f7-discovery.ld
 
 STARTUP_FOLDER= $(LIBROOT_FILENAME)/CMSIS/Device/ST/STM32F7xx/Source/Templates
-STARTUP = $(STARTUP_FOLDER)/gcc/startup_stm32f769xx.o
+STARTUP = $(STARTUP_FOLDER)/gcc/startup_$(PTYPE_FILENAME_LOWERCASE).o
 STARTUP += $(STARTUP_FOLDER)/system_stm32f7xx.o
 
 ############ BSP
-ifeq ($(strip $(CONFIG_BSP_STM32F769I_MODULE_ENABLED)),y)
+ifeq ($(strip $(CONFIG_BSP_MODULE_ENABLED)),y)
 	STARTUP += $(BSP)/stm32f769i_discovery.o
 endif
-ifeq ($(strip $(CONFIG_BSP_STM32F769I_SDRAM_MODULE_ENABLED)),y)
+ifeq ($(strip $(CONFIG_BSP_SDRAM_MODULE_ENABLED)),y)
 	STARTUP += $(BSP)/stm32f769i_discovery_sdram.o
 endif
 
@@ -227,7 +233,7 @@ FULLASSERT = -DUSE_FULL_ASSERT
 LDFLAGS+= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m7 -specs=nosys.specs
 CFLAGS+= -mcpu=cortex-m7 -mthumb
 CFLAGS+= -I$(TEMPLATEROOT) -I$(DEVICE)/Include -I$(CORE)/Include -I$(PERIPH)/Inc -I$(BSP) -I.
-CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER $(FULLASSERT)
+CFLAGS+= -D$(CONFIG_PTYPE) -D$(CONFIG_BTYPE) -DUSE_HAL_DRIVER $(FULLASSERT)
 
 # Build executable
 
@@ -247,6 +253,10 @@ $(TARGET).elf: $(OBJS)
 
 %.bin: %.elf
 	$(OBJCOPY) -O binary $< $@
+
+# copies user defined files to project directory if they do not already exist
+init:
+	##
 
 clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) $(TARGET).elf $(TARGET).bin startup_stm32f* $(CLEANOTHER)
