@@ -110,7 +110,7 @@ CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER $(FULLASSERT)
 
 $(TARGET).bin: $(TARGET).elf
 
-$(TARGET).elf : $(OBJS)
+$(TARGET).elf: $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 
 # compile and generate dependency info
