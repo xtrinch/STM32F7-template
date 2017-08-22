@@ -9,23 +9,6 @@ endif
 #################
 ifeq ($(strip $(CONFIG_HAVE_DOT_CONFIG)),y)
 
-TEST=123
-
-else
-
-KBUILD_OUTPUT := ${CURDIR}/
-ifeq ($(OS),Windows_NT)
-	KBUILD_OUTPUT:=
-endif
-
-$(config_targets):
-	make -C $(TEMPLATEROOT)/$(config_folder_name) $(MAKECMDGOALS) KBUILD_KCONFIG=$(TEMPLATEROOT)/Kconfig KBUILD_OUTPUT=$(KBUILD_OUTPUT)
-	@if [ "$(OS)" = "Windows_NT" ]; then\
-        mv $(TEMPLATEROOT)/$(config_folder_name)/.config "$(subst /cygdrive/c,C:,${CURDIR})";\
-    fi
-
-endif
-
 # name of executable
 
 TARGET=$(notdir $(CURDIR))
@@ -92,6 +75,13 @@ STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal_cortex.o
 STARTUP += $(PERIPH)/Src/stm32f7xx_hal_i2c.o
 STARTUP += $(BSP)/stm32f769i_discovery.o
+ifeq ($(strip $(CONFIG_HAL_SPI_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_spi.o
+endif
+ifeq ($(strip $(CONFIG_HAL_RCC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_rcc.o
+endif
+
 
 # Compilation Flags
 
@@ -136,3 +126,18 @@ flash-windows: $(TARGET).bin
 # pull in dependencies
 
 -include $(OBJS:.o=.d)
+
+else
+
+KBUILD_OUTPUT := ${CURDIR}/
+ifeq ($(OS),Windows_NT)
+	KBUILD_OUTPUT:=
+endif
+
+$(config_targets):
+	make -C $(TEMPLATEROOT)/$(config_folder_name) $(MAKECMDGOALS) KBUILD_KCONFIG=$(TEMPLATEROOT)/Kconfig KBUILD_OUTPUT=$(KBUILD_OUTPUT)
+	@if [ "$(OS)" = "Windows_NT" ]; then\
+        mv $(TEMPLATEROOT)/$(config_folder_name)/.config "$(subst /cygdrive/c,C:,${CURDIR})";\
+    fi
+
+endif

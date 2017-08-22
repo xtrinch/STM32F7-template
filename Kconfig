@@ -14,6 +14,11 @@ menu "Included HAL libraries"
 config HAL_SPI_MODULE_ENABLED
 	bool "HAL_SPI_MODULE_ENABLED"
 	help
-		No help.
+		Include HAL Serial Peripheral Interface module.
+
+config HAL_RCC_MODULE_ENABLED
+	bool "HAL_RCC_MODULE_ENABLED"
+	help
+		Include HAL Reset and Clock Controller module.
 
 endmenu
