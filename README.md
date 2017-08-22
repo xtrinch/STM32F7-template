@@ -20,15 +20,23 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
   - CMSIS (Cortex Microcontroller Software Interface Standard) drivers
   - BSP (Board Support Package) - middleware components (RTOS, USB, FatFs, graphics and TCP/IP).
 
-## Usage
+With this template, you can have several project directories that use a common makefile, `Makefile.common`, which you manipulate via `.config` file.
+
+## Demo project usage
+
+The demo project basically just toggles some LED's on and off.
 
   - clone the template
   - run `make (menuconfig|config|xconfig|gconfig)` in `Demo/` directory, this will create `.config` file in same directory
   - run make in the `Demo/` directory
-  
-This way, you can have several project directories that use a common makefile, `Makefile.common`, which you manipulate via `.config` file.
 
-The demo project basically just toggles some LED's on and off.
+## Usage on new project
+
+  - copy makefile from Demo project, point it to the directory where you cloned this template
+  - run `make (menuconfig|config|xconfig|gconfig)` to create `.config` file
+  - run `make init`, which will copy all appropriate template user-application files for your board from the stm32f7cube framework into current directory (you configure which board it is in `.config` file)
+  - run `make` to compile
+  - voila
 
 ## Programming & debugging the board
 
