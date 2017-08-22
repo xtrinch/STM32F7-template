@@ -1,4 +1,4 @@
-TEMPLATEROOT = ..
+TEMPLATEROOT=..
 
 # compilation flags for gdb
 
@@ -7,7 +7,7 @@ ASFLAGS = -g
 
 # object files
 
-OBJS=  $(STARTUP) main.o
+OBJS=$(STARTUP) main.o
 
 # include common make file
 

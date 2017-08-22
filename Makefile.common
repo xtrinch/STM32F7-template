@@ -1,3 +1,52 @@
+## copied from Kbuild.include
+
+###############################################################################
+#
+# When a Kconfig string contains a filename, it is suitable for
+# passing to shell commands. It is surrounded by double-quotes, and
+# any double-quotes or backslashes within it are escaped by
+# backslashes.
+#
+# This is no use for dependencies or $(wildcard). We need to strip the
+# surrounding quotes and the escaping from quotes and backslashes, and
+# we *do* need to escape any spaces in the string. So, for example:
+#
+# Usage: $(eval $(call config_filename,FOO))
+#
+# Defines FOO_FILENAME based on the contents of the CONFIG_FOO option,
+# transformed as described above to be suitable for use within the
+# makefile.
+#
+# Also, if the filename is a relative filename and exists in the source
+# tree but not the build tree, define FOO_SRCPREFIX as $(srctree)/ to
+# be prefixed to *both* command invocation and dependencies.
+#
+# Note: We also print the filenames in the quiet_cmd_foo text, and
+# perhaps ought to have a version specially escaped for that purpose.
+# But it's only cosmetic, and $(patsubst "%",%,$(CONFIG_FOO)) is good
+# enough.  It'll strip the quotes in the common case where there's no
+# space and it's a simple filename, and it'll retain the quotes when
+# there's a space. There are some esoteric cases in which it'll print
+# the wrong thing, but we don't really care. The actual dependencies
+# and commands *do* get it right, with various combinations of single
+# and double quotes, backslashes and spaces in the filenames.
+#
+###############################################################################
+
+define config_filename
+ifneq ($$(CONFIG_$(1)),"")
+$(1)_FILENAME := $$(subst \\,\,$$(subst \$$(quote),$$(quote),$$(subst $$(space_escape),\$$(space),$$(patsubst "%",%,$$(subst $$(space),$$(space_escape),$$(CONFIG_$(1)))))))
+ifneq ($$(patsubst /%,%,$$(firstword $$($(1)_FILENAME))),$$(firstword $$($(1)_FILENAME)))
+else
+ifeq ($$(wildcard $$($(1)_FILENAME)),)
+ifneq ($$(wildcard $$(srctree)/$$($(1)_FILENAME)),)
+$(1)_SRCPREFIX := $(srctree)/
+endif
+endif
+endif
+endif
+endef
+
 config_targets ?= menuconfig config xconfig gconfig
 config_folder_name ?= config
 
@@ -13,30 +62,25 @@ ifeq ($(strip $(CONFIG_HAVE_DOT_CONFIG)),y)
 
 TARGET=$(notdir $(CURDIR))
 
-# Tool path
-
-TOOLROOT="C:/Program Files (x86)/GNU Tools ARM Embedded/6 2017-q2-update/bin/"
-
-# Library path
-
-LIBROOT=C:/STM32Cube_FW_F7_V1.7.0/Drivers
+# strip quotes from library path with the help of Kbuild.include function, creates LIBROOT_FILENAME variable
+$(eval $(call config_filename,LIBROOT))
 
 # Tools
 
-CC=$(TOOLROOT)arm-none-eabi-gcc
-LD=$(TOOLROOT)arm-none-eabi-gcc
-AR=$(TOOLROOT)arm-none-eabi-ar
-AS=$(TOOLROOT)arm-none-eabi-as
-OBJCOPY=$(TOOLROOT)arm-none-eabi-objcopy
-GDB=$(TOOLROOT)arm-none-eabi-gdb
+CC=$(CONFIG_TOOLROOT)arm-none-eabi-gcc
+LD=$(CONFIG_TOOLROOT)arm-none-eabi-gcc
+AR=$(CONFIG_TOOLROOT)arm-none-eabi-ar
+AS=$(CONFIG_TOOLROOT)arm-none-eabi-as
+OBJCOPY=$(CONFIG_TOOLROOT)arm-none-eabi-objcopy
+GDB=$(CONFIG_TOOLROOT)arm-none-eabi-gdb
 
 # Code Paths
 
-DEVICE=$(LIBROOT)/CMSIS/Device/ST/STM32F7xx
-CORE=$(LIBROOT)/CMSIS
-PERIPH=$(LIBROOT)/STM32F7xx_HAL_Driver
+DEVICE=$(LIBROOT_FILENAME)/CMSIS/Device/ST/STM32F7xx
+CORE=$(LIBROOT_FILENAME)/CMSIS
+PERIPH=$(LIBROOT_FILENAME)/STM32F7xx_HAL_Driver
 # Board Support Package
-BSP=$(LIBROOT)/BSP/STM32F769I-Discovery
+BSP=$(LIBROOT_FILENAME)/BSP/STM32F769I-Discovery
 
 # Search path for standard files
 vpath %.c $(TEMPLATEROOT)
@@ -61,7 +105,7 @@ PTYPE1 = STM32F769I_DISCOVERY
 
 LDSCRIPT = $(TEMPLATEROOT)/stm32f7-discovery.ld
 
-STARTUP_FOLDER= $(LIBROOT)/CMSIS/Device/ST/STM32F7xx/Source/Templates
+STARTUP_FOLDER= $(LIBROOT_FILENAME)/CMSIS/Device/ST/STM32F7xx/Source/Templates
 STARTUP = $(STARTUP_FOLDER)/gcc/startup_stm32f769xx.o
 STARTUP += $(STARTUP_FOLDER)/system_stm32f7xx.o
 
