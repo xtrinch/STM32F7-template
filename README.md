@@ -23,10 +23,10 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
 ## Usage
 
   - clone the template
-  - run `make config` or `make menuconfig` or the like in `Demo/` directory, this will create `.config` file in same directory
+  - run `make config` or `make menuconfig` (or the like) in `Demo/` directory, this will create `.config` file in same directory
   - run make in the `Demo/` directory
   
-This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`.
+This way, you can have several project directories that use a common makefile, `Makefile.common`, which you manipulate via `.config` file.
 
 The demo project basically just toggles some LED's on and off.
 
