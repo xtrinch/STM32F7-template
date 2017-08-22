@@ -1,3 +1,31 @@
+config_targets ?= menuconfig config xconfig gconfig
+config_folder_name ?= config
+
+# pull in the user's configuration
+ifeq (,$(filter $(config_targets),$(MAKECMDGOALS)))
+	-include ${CURDIR}/.config
+endif
+
+#################
+ifeq ($(strip $(CONFIG_HAVE_DOT_CONFIG)),y)
+
+TEST=123
+
+else
+
+KBUILD_OUTPUT := ${CURDIR}/
+ifeq ($(OS),Windows_NT)
+	KBUILD_OUTPUT:=
+endif
+
+$(config_targets):
+	make -C $(TEMPLATEROOT)/$(config_folder_name) $(MAKECMDGOALS) KBUILD_KCONFIG=$(TEMPLATEROOT)/Kconfig KBUILD_OUTPUT=$(ROOT_DIR)
+	@if [ "$(OS)" = "Windows_NT" ]; then\
+        mv $(TEMPLATEROOT)/$(config_folder_name)/.config "$(subst /cygdrive/c,C:,${CURDIR})";\
+    fi
+
+endif
+
 # name of executable
 
 TARGET=$(notdir $(CURDIR))
@@ -52,7 +80,7 @@ vpath %.c $(DEVICE)
 
 #  Processor specific
 
-#PTYPE = STM32F10X_MD_VL 
+#PTYPE = STM32F10X_MD_VL
 #PTYPE = STM32F746xx
 PTYPE = STM32F769xx
 PTYPE1 = STM32F769I_DISCOVERY
@@ -74,11 +102,11 @@ STARTUP += $(BSP)/stm32f769i_discovery.o
 FULLASSERT = -DUSE_FULL_ASSERT
 
 LDFLAGS+= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m7 -specs=nosys.specs
-CFLAGS+= -mcpu=cortex-m7 -mthumb 
+CFLAGS+= -mcpu=cortex-m7 -mthumb
 CFLAGS+= -I$(TEMPLATEROOT) -I$(DEVICE)/Include -I$(CORE)/Include -I$(PERIPH)/Inc -I$(BSP) -I.
 CFLAGS+= -D$(PTYPE) -D$(PTYPE1) -DUSE_HAL_DRIVER $(FULLASSERT)
 
-# Build executable 
+# Build executable
 
 $(TARGET).bin: $(TARGET).elf
 

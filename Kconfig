@@ -1,0 +1,19 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "STM32F7-template configuration"
+
+config HAVE_DOT_CONFIG
+	bool
+	default y
+
+menu "Included HAL libraries"
+
+config HAL_SPI_MODULE_ENABLED
+	bool "HAL_SPI_MODULE_ENABLED"
+	help
+		No help.
+
+endmenu
