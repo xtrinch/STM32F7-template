@@ -1,5 +1,4 @@
 #include "stm32f769i_discovery.h"
-#include "stm32f7xx.h"
 
 int main(void)
 {
