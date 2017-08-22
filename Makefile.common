@@ -19,7 +19,7 @@ ifeq ($(OS),Windows_NT)
 endif
 
 $(config_targets):
-	make -C $(TEMPLATEROOT)/$(config_folder_name) $(MAKECMDGOALS) KBUILD_KCONFIG=$(TEMPLATEROOT)/Kconfig KBUILD_OUTPUT=$(ROOT_DIR)
+	make -C $(TEMPLATEROOT)/$(config_folder_name) $(MAKECMDGOALS) KBUILD_KCONFIG=$(TEMPLATEROOT)/Kconfig KBUILD_OUTPUT=$(KBUILD_OUTPUT)
 	@if [ "$(OS)" = "Windows_NT" ]; then\
         mv $(TEMPLATEROOT)/$(config_folder_name)/.config "$(subst /cygdrive/c,C:,${CURDIR})";\
     fi
@@ -59,10 +59,6 @@ BSP=$(LIBROOT)/BSP/STM32F769I-Discovery
 EL='C:/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility/ExternalLoader/MX25L512G_STM32F769I-DISCO.stldr'
 
 # Search path for standard files
-
-# next two lines are possibly useless
-#STM_SRC = $(TEMPLATE_ROOT)/Libraries/STM32F7xx_HAL_Driver/Src
-#STM_TEMPLATE = $(TEMPLATE_ROOT)/Libraries/CMSIS/Device/ST/STM32F7xx/Source/Templates
 vpath %.c $(TEMPLATEROOT)
 
 # Search path for perpheral library
