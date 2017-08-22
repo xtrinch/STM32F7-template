@@ -62,5 +62,5 @@ Concept adapted from [STM32-Template github project](https://github.com/geoffrey
 
 ### kbuild-template
 
-Adapted kbuild version for building embedded projects taken from [kbuild-template](https://github.com/embedded-it/kbuild-template.git
+Adapted kbuild version for building embedded projects taken from [kbuild-template github project](https://github.com/embedded-it/kbuild-template.git
 ).
