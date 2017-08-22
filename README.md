@@ -16,7 +16,7 @@ http://www.st.com/en/embedded-software/stm32cubef7.html
 
 Inside the downloaded zip file, you can find STM32F7Cube embedded software stack composed of:
 
-  - STM32F7xx HAL (Hardware abstraction layer?) and low-layer drivers
+  - STM32F7xx HAL (Hardware abstraction layer) and LL (low-layer) drivers
   - CMSIS (Cortex Microcontroller Software Interface Standard) drivers
   - BSP (Board Support Package) - middleware components (RTOS, USB, FatFs, graphics and TCP/IP).
 
@@ -27,7 +27,7 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
   - run `make config` or `make menuconfig` or the like in `Demo/` directory, this will create `.config` file in same directory
   - run make in the `Demo/` directory
   
-This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`, a concept adapted from [STM32-Template github project](https://github.com/geoffreymbrown/STM32-Template).
+This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`.
 
 The demo project basically just toggles some LED's on and off.
 
@@ -56,8 +56,11 @@ http://www.st.com/en/embedded-software/stsw-link004.html
 
 ## Acknowledgements
 
+### Concept
+
+Concept adapted from [STM32-Template github project](https://github.com/geoffreymbrown/STM32-Template).
+
 ### kbuild-template
 
-https://github.com/embedded-it/kbuild-template.git
-
-Modified kbuild version taken from here.
+Adapted kbuild version for building embedded projects taken from [kbuild-template](https://github.com/embedded-it/kbuild-template.git
+).
