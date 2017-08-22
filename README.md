@@ -1,6 +1,8 @@
 # STM32F7-template
 
-Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery & eval boards. Uses linux kernel kbuild system for creating .config file used for dynamic inclusion of HAL libraries and board/processor specific files. Tested on Ubuntu 16.04.2 LTS and on Windows 10 with cygwin binutils, both with ARM GNU Toolchain.
+Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery & eval boards. Uses linux kernel kbuild system for creating .config file used for dynamic inclusion of HAL libraries and board/processor specific files. 
+
+Tested on Ubuntu 16.04.2 LTS and on Windows 10 with cygwin binutils, both with ARM GNU Toolchain, and board STM32F76I-Discovery.
 
 ## Prerequisites
 
