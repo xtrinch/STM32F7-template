@@ -1,6 +1,6 @@
 # STM32F7-template
 
-Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery boards. Developed for and tested with STM32F769I-Disco, easily adaptable for others. Uses linux kernel kbuild system for creating .config file used for dynamic inclusion of HAL libraries. Tested on Ubuntu 16.04.2 LTS and on Windows 10 with cygwin binutils, both with ARM GNU Toolchain.
+Build template for the STM32F7 microprocessors, specifically the STM32F7 discovery & eval boards. Uses linux kernel kbuild system for creating .config file used for dynamic inclusion of HAL libraries and board/processor specific files. Tested on Ubuntu 16.04.2 LTS and on Windows 10 with cygwin binutils, both with ARM GNU Toolchain.
 
 ## Prerequisites
 
@@ -23,16 +23,12 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
 ## Usage
 
   - clone the template
-  - run `make config` or `make menuconfig` or the like in `Demo/` directory, this will create `.config` file in same directory
+  - run `make (menuconfig|config|xconfig|gconfig)` in `Demo/` directory, this will create `.config` file in same directory
   - run make in the `Demo/` directory
   
-This way, you can have several project directories that use a common makefile, which you need only fix in one place: `Makefile.common`.
+This way, you can have several project directories that use a common makefile, `Makefile.common`, which you manipulate via `.config` file.
 
 The demo project basically just toggles some LED's on and off.
-
-### Other STM32F7 boards
-
-Should be pretty easy to adapt to use with other STM32F7 discovery boards, just go through `Makefile.common` and include appropriate `.c` files for your board (Look for those included that have more than STM32F7 defined in their filename)
 
 ## Programming & debugging the board
 
