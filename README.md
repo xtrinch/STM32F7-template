@@ -23,16 +23,12 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
 ## Usage
 
   - clone the template
-  - run `make config` or `make menuconfig` (or the like) in `Demo/` directory, this will create `.config` file in same directory
+  - run `make (menuconfig|config|xconfig|gconfig)` in `Demo/` directory, this will create `.config` file in same directory
   - run make in the `Demo/` directory
   
 This way, you can have several project directories that use a common makefile, `Makefile.common`, which you manipulate via `.config` file.
 
 The demo project basically just toggles some LED's on and off.
-
-### Other STM32F7 boards
-
-Should be pretty easy to adapt to use with other STM32F7 discovery boards, just go through `Makefile.common` and include appropriate `.c` files for your board (Look for those included that have more than STM32F7 defined in their filename)
 
 ## Programming & debugging the board
 
