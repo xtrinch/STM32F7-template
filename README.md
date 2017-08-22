@@ -23,7 +23,6 @@ Inside the downloaded zip file, you can find STM32F7Cube embedded software stack
 ## Usage
 
   - clone the template
-  - amend the toolchain and libraries path in `Makefile.common`
   - run `make config` or `make menuconfig` or the like in `Demo/` directory, this will create `.config` file in same directory
   - run make in the `Demo/` directory
   
