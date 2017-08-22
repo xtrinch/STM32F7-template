@@ -60,7 +60,6 @@ vpath %.c $(DEVICE)
 #  Processor specific
 
 #PTYPE = STM32F10X_MD_VL
-#PTYPE = STM32F746xx
 PTYPE = STM32F769xx
 PTYPE1 = STM32F769I_DISCOVERY
 
@@ -69,17 +68,112 @@ LDSCRIPT = $(TEMPLATEROOT)/stm32f7-discovery.ld
 STARTUP_FOLDER= $(LIBROOT)/CMSIS/Device/ST/STM32F7xx/Source/Templates
 STARTUP = $(STARTUP_FOLDER)/gcc/startup_stm32f769xx.o
 STARTUP += $(STARTUP_FOLDER)/system_stm32f7xx.o
-STARTUP += $(PERIPH)/Src/stm32f7xx_hal.o
-STARTUP += $(PERIPH)/Src/stm32f7xx_hal_gpio.o
-STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma.o
-STARTUP += $(PERIPH)/Src/stm32f7xx_hal_cortex.o
-STARTUP += $(PERIPH)/Src/stm32f7xx_hal_i2c.o
 STARTUP += $(BSP)/stm32f769i_discovery.o
+
+ifeq ($(strip $(CONFIG_BSP_STM32F769I_SDRAM_MODULE_ENABLED)),y)
+	STARTUP += $(BSP)/stm32f769i_discovery_sdram.o
+endif
+
+############ HAL
+
+ifeq ($(strip $(CONFIG_HAL_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal.o
+endif
+ifeq ($(strip $(CONFIG_HAL_GPIO_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_gpio.o
+endif
+ifeq ($(strip $(CONFIG_HAL_I2C_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_i2c.o
+endif
+ifeq ($(strip $(CONFIG_HAL_I2C_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_i2c_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_DMA_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma.o
+endif
+ifeq ($(strip $(CONFIG_HAL_DMA_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_DMA2D_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dma2d.o
+endif
+ifeq ($(strip $(CONFIG_HAL_DSI_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dsi.o
+endif
 ifeq ($(strip $(CONFIG_HAL_SPI_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_spi.o
 endif
+ifeq ($(strip $(CONFIG_HAL_UART_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_uart.o
+endif
+ifeq ($(strip $(CONFIG_HAL_USART_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_usart.o
+endif
 ifeq ($(strip $(CONFIG_HAL_RCC_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_rcc.o
+endif
+ifeq ($(strip $(CONFIG_HAL_RCC_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_rcc_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_PWR_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_pwr.o
+endif
+ifeq ($(strip $(CONFIG_HAL_PWR_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_pwr_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_ETH_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_eth.o
+endif
+ifeq ($(strip $(CONFIG_HAL_ADC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_adc.o
+endif
+ifeq ($(strip $(CONFIG_HAL_ADC_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_adc_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_CAN_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_can.o
+endif
+ifeq ($(strip $(CONFIG_HAL_CEC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_cec.o
+endif
+ifeq ($(strip $(CONFIG_HAL_CORTEX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_cortex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_TIM_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_tim.o
+endif
+ifeq ($(strip $(CONFIG_HAL_TIM_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_tim_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_NOR_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_nor.o
+endif
+ifeq ($(strip $(CONFIG_HAL_SDRAM_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sdram.o
+endif
+ifeq ($(strip $(CONFIG_HAL_SRAM_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_sram.o
+endif
+ifeq ($(strip $(CONFIG_HAL_WWDG_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_wwdg.o
+endif
+ifeq ($(strip $(CONFIG_HAL_FLASH_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_flash.o
+endif
+ifeq ($(strip $(CONFIG_HAL_FLASH_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_flash_ex.o
+endif
+ifeq ($(strip $(CONFIG_HAL_CRC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_crc.o
+endif
+ifeq ($(strip $(CONFIG_HAL_CRC_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_crc_ex.o
+endif
+
+
+############ LL
+ifeq ($(strip $(CONFIG_LL_FMC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_fmc.o
 endif
 
 

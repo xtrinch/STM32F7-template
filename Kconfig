@@ -9,16 +9,189 @@ config HAVE_DOT_CONFIG
 	bool
 	default y
 
+menu "Included BSP libraries"
+
+config BSP_STM32F769I_SDRAM_MODULE_ENABLED
+	bool "BSP_STM32F769I_SDRAM_MODULE_ENABLED"
+	help
+		Include BSP SDRAM module.
+
+endmenu
+
 menu "Included HAL libraries"
+
+config HAL_MODULE_ENABLED
+	bool "HAL_MODULE_ENABLED"
+	help
+		Include HAL Initialization module.
+
+config HAL_GPIO_MODULE_ENABLED
+	bool "HAL_GPIO_MODULE_ENABLED"
+	help
+		Include HAL General Purpose Input Output module.
+
+config HAL_DMA_MODULE_ENABLED
+	bool "HAL_DMA_MODULE_ENABLED"
+	help
+		Include HAL Direct Memory Access module.
+
+config HAL_DMA_EX_MODULE_ENABLED
+	bool "HAL_DMA_EX_MODULE_ENABLED"
+	help
+		Include HAL Direct Memory Access extension module.
+
+config HAL_DMA2D_MODULE_ENABLED
+	bool "HAL_DMA2D_MODULE_ENABLED"
+	help
+		Include HAL Direct Memory Access 2D module.
 
 config HAL_SPI_MODULE_ENABLED
 	bool "HAL_SPI_MODULE_ENABLED"
 	help
 		Include HAL Serial Peripheral Interface module.
 
+config HAL_UART_MODULE_ENABLED
+	bool "HAL_UART_MODULE_ENABLED"
+	help
+		Include HAL Universal Asynchronous Receiver/Transmitter module.	
+
+config HAL_USART_MODULE_ENABLED
+	bool "HAL_USART_MODULE_ENABLED"
+	help
+		Include HAL Universal Synchronous Asynchronous Receiver/Transmitter module.	
+
+config HAL_I2C_MODULE_ENABLED
+	bool "HAL_I2C_MODULE_ENABLED"
+	help
+		Include HAL Inter-Integrated Circuit module.
+
+config HAL_I2C_EX_MODULE_ENABLED
+	bool "HAL_I2C_EX_MODULE_ENABLED"
+	help
+		Include HAL Inter-Integrated Circuit extension module.
+
+config HAL_DSI_MODULE_ENABLED
+	bool "HAL_DSI_MODULE_ENABLED"
+	help
+		Include HAL Display Serial Interface module.
+
 config HAL_RCC_MODULE_ENABLED
 	bool "HAL_RCC_MODULE_ENABLED"
 	help
 		Include HAL Reset and Clock Controller module.
+
+config HAL_RCC_EX_MODULE_ENABLED
+	bool "HAL_RCC_EX_MODULE_ENABLED"
+	help
+		Include HAL Reset and Clock Controller extension module.
+
+config HAL_PWR_MODULE_ENABLED
+	bool "HAL_PWR_MODULE_ENABLED"
+	help
+		Include HAL Power Controller module.
+
+config HAL_PWR_EX_MODULE_ENABLED
+	bool "HAL_PWR_EX_MODULE_ENABLED"
+	help
+		Include HAL Power Controller extension module.
+
+config HAL_ETH_MODULE_ENABLED
+	bool "HAL_ETH_MODULE_ENABLED"
+	help
+		Include HAL Ethernet module.
+
+config HAL_ADC_MODULE_ENABLED
+	bool "HAL_ADC_MODULE_ENABLED"
+	help
+		Include HAL Analog to Digital Converter module.
+
+config HAL_ADC_EX_MODULE_ENABLED
+	bool "HAL_ADC_EX_MODULE_ENABLED"
+	help
+		Include HAL Analog to Digital Converter extension module.
+
+config HAL_DAC_MODULE_ENABLED
+	bool "HAL_DAC_MODULE_ENABLED"
+	help
+		Include HAL Digital to Analog Converter module.
+
+config HAL_DAC_EX_MODULE_ENABLED
+	bool "HAL_DAC_EX_MODULE_ENABLED"
+	help
+		Include HAL Digital to Analog Converter extension module.
+
+config HAL_CAN_MODULE_ENABLED
+	bool "HAL_CAN_MODULE_ENABLED"
+	help
+		Include HAL Controller Area Network module.
+
+config HAL_CEC_MODULE_ENABLED
+	bool "HAL_CEC_MODULE_ENABLED"
+	help
+		Include HAL Consumer Electronics Controller module.
+
+config HAL_CORTEX_MODULE_ENABLED
+	bool "HAL_CORTEX_MODULE_ENABLED"
+	help
+		Include HAL CORTEX module.	
+
+config HAL_TIM_MODULE_ENABLED
+	bool "HAL_TIM_MODULE_ENABLED"
+	help
+		Include HAL Timer module.
+
+config HAL_TIM_EX_MODULE_ENABLED
+	bool "HAL_TIM_EX_MODULE_ENABLED"
+	help
+		Include HAL Timer extension module.
+
+config HAL_NOR_MODULE_ENABLED
+	bool "HAL_NOR_MODULE_ENABLED"
+	help
+		Include HAL NOR module.
+
+config HAL_SRAM_MODULE_ENABLED
+	bool "HAL_SRAM_MODULE_ENABLED"
+	help
+		Include HAL Static Random Access Memory module.
+
+config HAL_SDRAM_MODULE_ENABLED
+	bool "HAL_SDRAM_MODULE_ENABLED"
+	help
+		Include HAL Synchronous Dynamic Random Access Memory module.
+
+config HAL_WWDG_MODULE_ENABLED
+	bool "HAL_WWDG_MODULE_ENABLED"
+	help
+		Include HAL Window Watchdog module.
+	
+config HAL_FLASH_MODULE_ENABLED
+	bool "HAL_FLASH_MODULE_ENABLED"
+	help
+		Include HAL internal FLASH memory module.
+
+config HAL_FLASH_EX_MODULE_ENABLED
+	bool "HAL_FLASH_EX_MODULE_ENABLED"
+	help
+		Include HAL internal FLASH memory extension module.
+
+config HAL_CRC_MODULE_ENABLED
+	bool "HAL_CRC_MODULE_ENABLED"
+	help
+		Include HAL Cyclic Redundancy Check module.
+
+config HAL_CRC_EX_MODULE_ENABLED
+	bool "HAL_CRC_EX_MODULE_ENABLED"
+	help
+		Include HAL Cyclic Redundancy Check extension module.
+
+endmenu
+
+menu "Included LL libraries"
+
+config LL_FMC_MODULE_ENABLED
+	bool "LL_FMC_MODULE_ENABLED"
+	help
+		Include LL Flexible Memory Controller module.
 
 endmenu
