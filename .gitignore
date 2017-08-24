@@ -86,8 +86,5 @@ ID
 *~
 \#*#
 
-# Kconfig presets
-all.config
-
 # Kdevelop4
 *.kdev4
