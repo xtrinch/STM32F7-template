@@ -17,6 +17,7 @@
 # Normal rules
 #
 .*
+!.config
 *.o
 *.o.*
 *.a
@@ -85,6 +86,8 @@ ID
 *.orig
 *~
 \#*#
+
+all.config
 
 # Kdevelop4
 *.kdev4
