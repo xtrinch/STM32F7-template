@@ -288,7 +288,7 @@ endif
 ############ Utils
 
 ifeq ($(strip $(CONFIG_LCD_LOG_UTIL_ENABLED)),y)
-	STARTUP += $(LIBROOT_FILENAME)/Utilities/Log/lcd_log.o
+	STARTUP += $(LIBROOT_FILENAME)/Utilities/Log/lcd_log.o syscalls.o
 	CFLAGS += -I$(LIBROOT_FILENAME)/Utilities/Log
 endif
 
@@ -360,6 +360,8 @@ ifeq ($(strip $(CONFIG_LCD_LOG_UTIL_ENABLED)),y)
 	cp -n --no-preserve=mode,ownership $(LIBROOT_FILENAME)/Utilities/Log/lcd_log_conf_template.h ./lcd_log_conf.h
 	## replace stm32xxx_eval with stm32f769i_discovery
 	sed -i -- 's/stm32xxx_eval/$(BTYPE_FILENAME)/g' lcd_log_conf.h
+	## copy syscalls.c from one of the example directories, because otherwise overriding putchar will not work
+	cp -n --no-preserve=mode,ownership $(LIBROOT_FILENAME)/Projects/STM32F769I_EVAL/Examples/UART/UART_Printf/SW4STM32/syscalls.c .
 endif
 
 clean:
