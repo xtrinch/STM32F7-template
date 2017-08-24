@@ -35,7 +35,7 @@ config TOOLROOT
 
 config LIBROOT
 	string "LIBROOT"
-	default "C:/STM32Cube_FW_F7_V1.7.0/Drivers"
+	default "C:/STM32Cube_FW_F7_V1.7.0"
 	help
 		STM32F7Cube path.
 
@@ -61,6 +61,12 @@ config BSP_AUDIO_MODULE_ENABLED
 	help
 		Include BSP audio module.
 
+config BSP_LCD_MODULE_ENABLED
+	bool "BSP_LCD_MODULE_ENABLED"
+	default y
+	help
+		Include BSP LCD module.
+
 endmenu
 
 menu "Included BSP components"
@@ -70,6 +76,12 @@ config BSP_WM8994_COMPONENT_ENABLED
 	default y
 	help
 		Include BSP WM8994 component - hi-fi codec.
+
+config BSP_OTM8009A_COMPONENT_ENABLED
+	bool "BSP_OTM8009A_COMPONENT_ENABLED"
+	default y
+	help
+		Include BSP OTM8009A component - driver for TFT LCDs.
 endmenu
 
 menu "Included HAL libraries"
@@ -308,6 +320,28 @@ config HAL_DFSDM_MODULE_ENABLED
 	help
 		Include HAL Digital Filter for SD modulators module.
 
+config HAL_LTDC_MODULE_ENABLED
+	bool "HAL_LTDC_MODULE_ENABLED"
+	default y
+	help
+		Include HAL LCD TFT Controller module.
+
+config HAL_LTDC_EX_MODULE_ENABLED
+	bool "HAL_LTDC_EX_MODULE_ENABLED"
+	default y
+	help
+		Include HAL LCD TFT Controller extension module.
+
+endmenu
+
+menu "Use LL driver"
+
+config USE_LL_DRIVER
+	bool "USE_LL_DRIVER"
+	default y
+	help
+		Compiler switch needed to use LL drivers.
+
 endmenu
 
 menu "Included LL libraries"
@@ -335,5 +369,15 @@ config LL_USB_MODULE_ENABLED
 	default y
 	help
 		Include LL USB module.
+
+endmenu
+
+menu "Included utils"
+
+config LCD_LOG_UTIL_ENABLED
+	bool "LCD_LOG_UTIL_ENABLED"
+	default y
+	help
+		Include lcd log util.
 
 endmenu

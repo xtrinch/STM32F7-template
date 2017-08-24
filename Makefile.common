@@ -126,18 +126,24 @@ STARTUP = system_stm32f7xx.o startup_$(PTYPE_FILENAME_LOWERCASE).o stm32f7xx_hal
 
 ############ BSP
 ifeq ($(strip $(CONFIG_BSP_MODULE_ENABLED)),y)
-	STARTUP += $(BSP)/stm32f769i_discovery.o
+	STARTUP += $(BSP)/$(BTYPE_FILENAME).o
 endif
 ifeq ($(strip $(CONFIG_BSP_SDRAM_MODULE_ENABLED)),y)
-	STARTUP += $(BSP)/stm32f769i_discovery_sdram.o
+	STARTUP += $(BSP)/$(BTYPE_FILENAME)_sdram.o
 endif
 ifeq ($(strip $(CONFIG_BSP_AUDIO_MODULE_ENABLED)),y)
-	STARTUP += $(BSP)/stm32f769i_discovery_audio.o
+	STARTUP += $(BSP)/$(BTYPE_FILENAME)_audio.o
+endif
+ifeq ($(strip $(CONFIG_BSP_LCD_MODULE_ENABLED)),y)
+	STARTUP += $(BSP)/$(BTYPE_FILENAME)_lcd.o
 endif
 
 ############ BSP components
 ifeq ($(strip $(CONFIG_BSP_WM8994_COMPONENT_ENABLED)),y)
 	STARTUP += $(BSP_COMPONENTS)/wm8994/wm8994.o
+endif
+ifeq ($(strip $(CONFIG_BSP_OTM8009A_COMPONENT_ENABLED)),y)
+	STARTUP += $(BSP_COMPONENTS)/otm8009a/otm8009a.o
 endif
 
 ############ HAL
@@ -253,9 +259,19 @@ endif
 ifeq ($(strip $(CONFIG_HAL_DFSDM_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_dfsdm.o
 endif
-
+ifeq ($(strip $(CONFIG_HAL_LTDC_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_ltdc.o
+endif
+ifeq ($(strip $(CONFIG_HAL_LTDC_EX_MODULE_ENABLED)),y)
+	STARTUP += $(PERIPH)/Src/stm32f7xx_hal_ltdc_ex.o
+endif
 
 ############ LL
+
+ifeq ($(strip $(CONFIG_USE_LL_DRIVER)),y)
+	USE_LL_DRIVER = -DUSE_LL_DRIVER
+endif
+
 ifeq ($(strip $(CONFIG_LL_FMC_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_fmc.o
 endif
@@ -269,15 +285,22 @@ ifeq ($(strip $(CONFIG_LL_USB_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_usb.o
 endif
 
+############ Utils
+
+ifeq ($(strip $(CONFIG_LCD_LOG_UTIL_ENABLED)),y)
+	STARTUP += $(LIBROOT_FILENAME)/Utilities/Log/lcd_log.o
+	CFLAGS += -I$(LIBROOT_FILENAME)/Utilities/Log
+endif
 
 # Compilation Flags
 
 FULLASSERT = -DUSE_FULL_ASSERT
 
+
 LDFLAGS+= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m7 -specs=nosys.specs
 CFLAGS+= -mcpu=cortex-m7 -mthumb
 CFLAGS+= -I$(TEMPLATEROOT) -I$(DEVICE)/Include -I$(CORE)/Include -I$(PERIPH)/Inc -I$(BSP) -I.
-CFLAGS+= -D$(PTYPE_FILENAME_UPPERCASE) -D$(CONFIG_BTYPE) -DUSE_HAL_DRIVER $(FULLASSERT)
+CFLAGS+= -D$(PTYPE_FILENAME_UPPERCASE) -D$(CONFIG_BTYPE) -DUSE_HAL_DRIVER $(FULLASSERT) $(USE_LL_DRIVER)
 
 # Build executable
 
@@ -333,6 +356,11 @@ init:
 
 	cp -n --no-preserve=mode,ownership $(EXAMPLES_FOLDER)/Inc/main.h .
 
+ifeq ($(strip $(CONFIG_LCD_LOG_UTIL_ENABLED)),y)
+	cp -n --no-preserve=mode,ownership $(LIBROOT_FILENAME)/Utilities/Log/lcd_log_conf_template.h ./lcd_log_conf.h
+	## replace stm32xxx_eval with stm32f769i_discovery
+	sed -i -- 's/stm32xxx_eval/$(BTYPE_FILENAME)/g' lcd_log_conf.h
+endif
 
 clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) $(TARGET).elf $(TARGET).bin $(CLEANOTHER)
