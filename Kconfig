@@ -107,6 +107,7 @@ config HAL_DMA_MODULE_ENABLED
 config HAL_DMA_EX_MODULE_ENABLED
 	bool "HAL_DMA_EX_MODULE_ENABLED"
 	default y
+	depends on HAL_DMA_MODULE_ENABLED
 	help
 		Include HAL Direct Memory Access extension module.
 
@@ -142,6 +143,7 @@ config HAL_I2C_MODULE_ENABLED
 
 config HAL_I2C_EX_MODULE_ENABLED
 	bool "HAL_I2C_EX_MODULE_ENABLED"
+	depends on HAL_I2C_MODULE_ENABLED
 	default y
 	help
 		Include HAL Inter-Integrated Circuit extension module.
@@ -161,6 +163,7 @@ config HAL_RCC_MODULE_ENABLED
 config HAL_RCC_EX_MODULE_ENABLED
 	bool "HAL_RCC_EX_MODULE_ENABLED"
 	default y
+	depends on HAL_RCC_MODULE_ENABLED
 	help
 		Include HAL Reset and Clock Controller extension module.
 
@@ -172,6 +175,7 @@ config HAL_PWR_MODULE_ENABLED
 
 config HAL_PWR_EX_MODULE_ENABLED
 	bool "HAL_PWR_EX_MODULE_ENABLED"
+	depends on HAL_PWR_MODULE_ENABLED
 	default y
 	help
 		Include HAL Power Controller extension module.
@@ -190,6 +194,7 @@ config HAL_ADC_MODULE_ENABLED
 
 config HAL_ADC_EX_MODULE_ENABLED
 	bool "HAL_ADC_EX_MODULE_ENABLED"
+	depends on HAL_ADC_MODULE_ENABLED
 	default y
 	help
 		Include HAL Analog to Digital Converter extension module.
@@ -202,6 +207,7 @@ config HAL_DAC_MODULE_ENABLED
 
 config HAL_DAC_EX_MODULE_ENABLED
 	bool "HAL_DAC_EX_MODULE_ENABLED"
+	depends on HAL_ADC_MODULE_ENABLED
 	default y
 	help
 		Include HAL Digital to Analog Converter extension module.
@@ -232,6 +238,7 @@ config HAL_TIM_MODULE_ENABLED
 
 config HAL_TIM_EX_MODULE_ENABLED
 	bool "HAL_TIM_EX_MODULE_ENABLED"
+	depends on HAL_TIM_MODULE_ENABLED
 	default y
 	help
 		Include HAL Timer extension module.
@@ -274,6 +281,7 @@ config HAL_FLASH_MODULE_ENABLED
 
 config HAL_FLASH_EX_MODULE_ENABLED
 	bool "HAL_FLASH_EX_MODULE_ENABLED"
+	depends on HAL_FLASH_MODULE_ENABLED
 	default y
 	help
 		Include HAL internal FLASH memory extension module.
@@ -286,6 +294,7 @@ config HAL_CRC_MODULE_ENABLED
 
 config HAL_CRC_EX_MODULE_ENABLED
 	bool "HAL_CRC_EX_MODULE_ENABLED"
+	depends on HAL_CRC_MODULE_ENABLED
 	default y
 	help
 		Include HAL Cyclic Redundancy Check extension module.
@@ -304,6 +313,7 @@ config HAL_PCD_MODULE_ENABLED
 
 config HAL_PCD_EX_MODULE_ENABLED
 	bool "HAL_PCD_EX_MODULE_ENABLED"
+	depends on HAL_PCD_MODULE_ENABLED
 	default y
 	help
 		Include HAL PCD (usb peripheral controller?) extension module.
@@ -328,6 +338,7 @@ config HAL_LTDC_MODULE_ENABLED
 
 config HAL_LTDC_EX_MODULE_ENABLED
 	bool "HAL_LTDC_EX_MODULE_ENABLED"
+	depends on HAL_LTDC_MODULE_ENABLED
 	default y
 	help
 		Include HAL LCD TFT Controller extension module.
@@ -372,10 +383,21 @@ config LL_USB_MODULE_ENABLED
 
 endmenu
 
+menu "Included middlewares"
+
+config LWIP_MIDDLEWARE_ENABLED
+	bool "LWIP_MIDDLEWARE_ENABLED"
+	default y
+	help
+		Include lwip tcp/ip stack.
+
+endmenu
+
 menu "Included utils"
 
 config LCD_LOG_UTIL_ENABLED
 	bool "LCD_LOG_UTIL_ENABLED"
+	depends on BSP_LCD_MODULE_ENABLED
 	default y
 	help
 		Include lcd log util.

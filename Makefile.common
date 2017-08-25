@@ -93,11 +93,12 @@ ifeq (,$(wildcard $(BSP))) # test if directory exists
 	BSP=$(LIBROOT_FILENAME)/Drivers/BSP/$(subst _,-,$(BTYPE_FILENAME))
 endif
 
-EXAMPLES_FOLDER=$(LIBROOT_FILENAME)/Projects/$(BTYPE_FILENAME)/Templates
+PROJECTS_FOLDER=$(LIBROOT_FILENAME)/Projects/$(BTYPE_FILENAME)
 # BSP board directory filenames sometimes contain - or _, randomly, test and change
 ifeq (,$(wildcard $(EXAMPLES_FOLDER))) # test if directory exists
-	EXAMPLES_FOLDER=$(LIBROOT_FILENAME)/Projects/$(subst _,-,$(BTYPE_FILENAME))/Templates
+	PROJECTS_FOLDER=$(LIBROOT_FILENAME)/Projects/$(subst _,-,$(BTYPE_FILENAME))
 endif
+EXAMPLES_FOLDER=$(PROJECTS_FOLDER)/Templates
 
 # Search path for standard files
 vpath %.c $(TEMPLATEROOT)
@@ -285,6 +286,42 @@ ifeq ($(strip $(CONFIG_LL_USB_MODULE_ENABLED)),y)
 	STARTUP += $(PERIPH)/Src/stm32f7xx_ll_usb.o
 endif
 
+############ Middlewares
+ifeq ($(strip $(CONFIG_LWIP_MIDDLEWARE_ENABLED)),y)
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/api_lib.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/api_msg.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/err.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/netbuf.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/netifapi.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/sockets.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/api/tcpip.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/dhcp.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/init.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/mem.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/memp.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/netif.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/pbuf.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/raw.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/stats.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/udp.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/inet.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/ip.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/ip_addr.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/ipv4/ip_frag.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/snmp/asn1_dec.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/snmp/asn1_enc.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/snmp/mib2.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/snmp/mib_structs.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/snmp/msg_in.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/core/snmp/msg_out.o
+	STARTUP += $(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/netif/etharp.o
+	CFLAGS += -I$(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/src/include
+	CFLAGS += -I$(LIBROOT_FILENAME)/Middlewares/Third_Party/LwIP/system/
+endif
+
 ############ Utils
 
 ifeq ($(strip $(CONFIG_LCD_LOG_UTIL_ENABLED)),y)
@@ -362,6 +399,10 @@ ifeq ($(strip $(CONFIG_LCD_LOG_UTIL_ENABLED)),y)
 	sed -i -- 's/stm32xxx_eval/$(BTYPE_FILENAME)/g' lcd_log_conf.h
 	## copy syscalls.c from one of the example directories, because otherwise overriding putchar will not work
 	cp -n --no-preserve=mode,ownership $(LIBROOT_FILENAME)/Projects/STM32F769I_EVAL/Examples/UART/UART_Printf/SW4STM32/syscalls.c .
+endif
+
+ifeq ($(strip $(CONFIG_LWIP_MIDDLEWARE_ENABLED)),y)
+	cp -n --no-preserve=mode,ownership $(PROJECTS_FOLDER)/Demonstration/Config/lwipopts.h .
 endif
 
 clean:
