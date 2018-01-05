@@ -391,6 +391,12 @@ config LWIP_MIDDLEWARE_ENABLED
 	help
 		Include lwip tcp/ip stack.
 
+config CMSIS_RTOS_ENABLED
+	bool "CMSIS_RTOS_ENABLED"
+	default y
+	help
+		Include Real Time Operating System.
+
 endmenu
 
 menu "Included utils"
